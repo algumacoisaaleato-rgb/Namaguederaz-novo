@@ -75,11 +75,32 @@ function renderYoutube(){
     <div id="ytresults"></div>
   </div>`;
 }
-function searchYT(){
+async function searchYT(){
   const q=document.getElementById("ytsearch").value.trim();
+  const box=document.getElementById("ytresults");
   if(!q)return;
-  document.getElementById("ytresults").innerHTML=
-    `<div class="notice">A pesquisa do YouTube será integrada aqui com a busca oficial. Nenhum vídeo será copiado ou hospedado pelo Namaguederaz.</div>`;
+  box.innerHTML=`<div class="notice">Pesquisando...</div>`;
+  try{
+    const r=await fetch(`/api/youtube-search?q=${encodeURIComponent(q)}`);
+    const data=await r.json();
+    if(!r.ok) throw new Error(data.error||"Erro na busca");
+    if(!data.length){
+      box.innerHTML=`<div class="notice">Nenhum vídeo encontrado.</div>`;
+      return;
+    }
+    box.innerHTML=data.map(v=>`
+      <button class="provider" style="margin:8px 16px;width:calc(100% - 32px);text-align:left"
+        data-id="${esc(v.id.videoId)}"
+        data-title="${esc(v.snippet.title)}"
+        onclick="openYTResult(this.dataset.id,this.dataset.title)">
+        <img src="${esc(v.snippet.thumbnails?.medium?.url || v.snippet.thumbnails?.default?.url || "")}"
+          style="width:100%;border-radius:10px;display:block;margin-bottom:8px">
+        <strong>${esc(v.snippet.title)}</strong>
+        <small>${esc(v.snippet.channelTitle||"")}</small>
+      </button>`).join("");
+  }catch(e){
+    box.innerHTML=`<div class="notice">Erro: ${esc(e.message)}</div>`;
+  }
 }
 function extractYT(v){
   try{const u=new URL(v); if(u.hostname.includes("youtu.be")) return u.pathname.slice(1); return u.searchParams.get("v")||""}catch{return ""}
