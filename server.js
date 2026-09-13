@@ -150,8 +150,9 @@ app.get("/api/youtube-search", async (req, res) => {
     url.searchParams.set("part", "snippet");
     url.searchParams.set("q", q);
     url.searchParams.set("type", "video");
-    url.searchParams.set("videoEmbeddable", "true");
-    url.searchParams.set("maxResults", "10");
+    url.searchParams.set("regionCode", "BR");
+url.searchParams.set("relevanceLanguage", "pt");
+url.searchParams.set("maxResults", "25");
     url.searchParams.set("key", key);
 
     const r = await fetch(url);
