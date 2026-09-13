@@ -1,0 +1,16 @@
+{
+  "name": "namaguederaz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Namaguederaz — salas de assistir juntos.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "verify": "node --check server.js && node --check public/app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "ws": "^8.18.3"
+  }
+}
