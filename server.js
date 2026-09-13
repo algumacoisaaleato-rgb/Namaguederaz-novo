@@ -152,6 +152,7 @@ app.get("/api/youtube-search", async (req, res) => {
     url.searchParams.set("type", "video");
     url.searchParams.set("regionCode", "BR");
 url.searchParams.set("relevanceLanguage", "pt");
+
 url.searchParams.set("maxResults", "25");
     url.searchParams.set("key", key);
 
