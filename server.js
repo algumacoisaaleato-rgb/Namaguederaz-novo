@@ -127,7 +127,54 @@ wss.on("connection", ws => {
 
   ws.on("close", () => removeClientFromRoom(ws));
 });
+app.get("/api/youtube-search", async (req, res) => {
+  try {
+    const q = String(req.query.q || "").trim();
 
+    if (!q) {
+      return res.status(400).json({
+        error: "Digite o que deseja pesquisar."
+      });
+    }
+
+    const key = process.env.YOUTUBE_API_KEY;
+
+    if (!key) {
+      return res.status(500).json({
+        error: "YOUTUBE_API_KEY não configurada."
+      });
+    }
+
+    const url = new URL("https://www.googleapis.com/youtube/v3/search");
+
+    url.searchParams.set("part", "snippet");
+    url.searchParams.set("q", q);
+    url.searchParams.set("type", "video");
+    url.searchParams.set("videoEmbeddable", "true");
+    url.searchParams.set("maxResults", "10");
+    url.searchParams.set("key", key);
+
+    const r = await fetch(url);
+    const data = await r.json();
+
+    if (!r.ok) {
+      console.error("YouTube API:", data);
+
+      return res.status(r.status).json({
+        error: data?.error?.message || "Erro na busca do YouTube."
+      });
+    }
+
+    res.json(data.items || []);
+
+  } catch (err) {
+    console.error("YouTube search:", err);
+
+    res.status(500).json({
+      error: "Não foi possível pesquisar no YouTube."
+    });
+  }
+});
 app.get("/health", (_req, res) => res.json({ ok: true, app: "Namaguederaz" }));
 
 const PORT = process.env.PORT || 3000;
