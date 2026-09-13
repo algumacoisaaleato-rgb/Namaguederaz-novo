@@ -67,11 +67,19 @@ function renderProviders(){
 }
 function renderYoutube(){
   app.innerHTML=`<div class="screen">${header()}
-    <input id="yturl" class="search" placeholder="Cole a URL do vídeo do YouTube">
-    <div class="notice">Cole um link do YouTube. Ao iniciar o vídeo, aparecerá <b>Assistir na sala</b>.</div>
-    <button class="provider" style="margin:16px;width:calc(100% - 32px)" onclick="loadYT()">Abrir vídeo</button>
-    <div id="ytbox" class="video-wrap hidden"><div id="player"></div><button id="watch" class="watch-btn" onclick="createFromCurrent()">Assistir na sala</button></div>
+    <div class="notice"><b>YouTube</b><br><br>Pesquise e escolha o vídeo que deseja assistir com seus amigos.</div>
+    <div style="display:flex;padding:0 16px 12px;gap:8px">
+      <input id="ytsearch" class="search" style="margin:0" placeholder="Pesquisar no YouTube">
+      <button class="chip" onclick="searchYT()">Pesquisar</button>
+    </div>
+    <div id="ytresults"></div>
   </div>`;
+}
+function searchYT(){
+  const q=document.getElementById("ytsearch").value.trim();
+  if(!q)return;
+  document.getElementById("ytresults").innerHTML=
+    `<div class="notice">A pesquisa do YouTube será integrada aqui com a busca oficial. Nenhum vídeo será copiado ou hospedado pelo Namaguederaz.</div>`;
 }
 function extractYT(v){
   try{const u=new URL(v); if(u.hostname.includes("youtu.be")) return u.pathname.slice(1); return u.searchParams.get("v")||""}catch{return ""}
