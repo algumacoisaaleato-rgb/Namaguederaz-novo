@@ -9,7 +9,11 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const rooms = new Map();
 
-app.use(express.json());
+app.use(express.json());app.use((req,res,next)=>{
+  res.header("Access-Control-Allow-Origin","*");
+  res.header("Access-Control-Allow-Headers","Content-Type");
+  next();
+});
 app.use(express.static(path.join(__dirname, "public")));
 
 function id() {
