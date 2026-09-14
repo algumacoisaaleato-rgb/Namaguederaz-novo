@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "express": "^5.1.0",
-    "ws": "^8.18.3"
+    "ws": "^8.18.3",
+"@capacitor/core": "^8.0.0",
+"@capacitor/android": "^8.0.0",
+"@capacitor/cli": "^8.0.0"
   }
 }
