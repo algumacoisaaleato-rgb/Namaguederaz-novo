@@ -8,16 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar arquivos do repositorio
+      - name: Baixar projeto
         uses: actions/checkout@v4
 
-      - name: Preparar projeto
-        run: |
-          unzip -q Namaguederaz_CORRIGIDO.zip -d projeto
-          cd projeto/Namaguederaz_FINAL
-          npm install
-          npx cap add android
-          npx cap sync android
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
       - name: Configurar Java
         uses: actions/setup-java@v4
@@ -25,16 +22,24 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Criar projeto Android
+        run: npx cap add android
+
+      - name: Sincronizar Capacitor
+        run: npx cap sync android
+
       - name: Configurar Android
         uses: android-actions/setup-android@v3
 
-      - name: Instalar Android SDK
-        run: |
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+      - name: Instalar SDK Android
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Gerar APK
         run: |
-          cd projeto/Namaguederaz_FINAL/android
+          cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
@@ -42,4 +47,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Namaguederaz-APK
-          path: projeto/Namaguederaz_FINAL/android/app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
