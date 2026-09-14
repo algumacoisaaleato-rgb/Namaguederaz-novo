@@ -1,11 +1,11 @@
 const app = document.getElementById("app");
 const state = { ws:null, room:null, player:null, youtubeReady:false, provider:null };
-
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+const BACKEND="https://namaguederaz-novo-2.onrender.com";
 function wsUrl(){
-  const p = location.protocol === "https:" ? "wss:" : "ws:";
-  return `${p}//${location.host}`;
+  return "wss://namaguederaz-novo-2.onrender.com";
 }
+
+  
 function connect(){
   if(state.ws && state.ws.readyState<=1) return;
   state.ws = new WebSocket(wsUrl());
