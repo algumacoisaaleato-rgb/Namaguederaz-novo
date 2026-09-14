@@ -1,9 +1,5 @@
-
 {
   "appId": "com.namaguederaz.app",
   "appName": "Namaguederaz",
-  "webDir": "public",
-  "server": {
-    "url": "https://namaguederaz-novo-2.onrender.com"
-  }
+  "webDir": "public"
 }
