@@ -113,12 +113,30 @@ function loadYT(){
   else window.pendingYT=id;
   if(window.YT?.Player) initYT();
 }
+function openYTResult(id,title){
+  app.innerHTML=`<div class="screen">${header()}
+    <div id="ytbox" class="video-wrap"><div id="player"></div></div>
+    <button id="watch" class="watch-btn" style="display:none;margin:12px 16px;width:calc(100% - 32px)" onclick="createRoom({provider:'YouTube',content:'${esc(id)}',title:'${esc(title)}'})">Criar sala</button>
+  </div>`;
+  window.pendingYT=id;
+  if(window.YT?.Player) initYT();
+}
+
 function initYT(){
-  const id=window.pendingYT; if(!id || !document.getElementById("player"))return;
+  const id=window.pendingYT;
+  if(!id || !document.getElementById("player"))return;
   window.pendingYT=null;
-  state.player=new YT.Player("player",{videoId:id,playerVars:{playsinline:1,rel:0},events:{
-    onStateChange:e=>{ if(e.data===1) document.getElementById("watch").style.display="block"; }
-  }});
+  state.player=new YT.Player("player",{
+    videoId:id,
+    playerVars:{playsinline:1,rel:0},
+    events:{
+      onReady:e=>e.target.playVideo(),
+      onStateChange:e=>{
+        const b=document.getElementById("watch");
+        if(e.data===1 && b)b.style.display="block";
+      }
+    }
+  });
 }
 window.onYouTubeIframeAPIReady=()=>{state.youtubeReady=true;initYT()};
 
