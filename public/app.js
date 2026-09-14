@@ -81,7 +81,7 @@ async function searchYT(){
   if(!q)return;
   box.innerHTML=`<div class="notice">Pesquisando...</div>`;
   try{
-    const r=await fetch(`/api/youtube-search?q=${encodeURIComponent(q)}`);
+const r=await fetch(`${BACKEND}/api/youtube-search?q=${encodeURIComponent(q)}`);
     const data=await r.json();
     if(!r.ok) throw new Error(data.error||"Erro na busca");
     if(!data.length){
