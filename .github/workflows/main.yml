@@ -32,7 +32,7 @@ jobs:
         run: npx cap sync android
 
       - name: Configurar Android
-        uses: android-actions/setup-android@v3
+       run: echo "Android SDK já disponível" 
 
       - name: Instalar SDK Android
         run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
